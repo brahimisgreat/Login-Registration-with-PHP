@@ -82,6 +82,7 @@
         </div>
         <div class="form-btn">
             <input class="btn btn-primary" type="submit" value="Register" name="submit" placeholder="Register">
+            <a href="login.php" class="btn btn-primary">login</a>
         </div>
         </form>
     </div>
