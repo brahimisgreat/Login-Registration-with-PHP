@@ -10,12 +10,21 @@
 <body>
     <div class="container">
         <?php 
+
           if (isset($_POST["submit"])) {
+            //get the form data
             $fullname = $_POST["Fullname"];
             $email = $_POST['email'];
             $password = $_POST['Password'];
             $repeat_password = $_POST['repeat_password'];
+
+            //initialize an array to store errors
             $errors = array();
+
+            //hash the password
+            $password = password_hash($password, PASSWORD_DEFAULT);
+
+            //validate the form
             if (empty($fullname) OR empty($email) OR empty($password) OR empty($repeat_password)) {
                 array_push($errors, "All fields are required");
             }  
