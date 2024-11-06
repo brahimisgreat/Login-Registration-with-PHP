@@ -22,7 +22,7 @@
             $errors = array();
 
             //hash the password
-            $password = password_hash($password, PASSWORD_DEFAULT);
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
             //validate the form
             if (empty($fullname) OR empty($email) OR empty($password) OR empty($repeat_password)) {
@@ -39,12 +39,22 @@
             }
 
             //if any errors display them
+            // if no errors, save the user to the database
             if (count($errors) > 0) {
                 foreach ($errors as $error) {
                     echo "<p class='text-danger'>$error</p>";
                 }
+            }else{
+                require_once "database.php";
+                $sql = "INSERT INTO users (full_name, email, Password) VALUES (?, ?, ?)";
+                $stmt = mysqli_stmt_init($conn);
+                $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
+                if($prepareStmt){
+                    mysqli_stmt_bind_param($stmt, "sss", $fullname, $email, $passwordHash);
+                    mysqli_stmt_execute($stmt);
+                    echo "<p class='text-success'>Registration Successful</p>";
+                }
             }
-            // if no errors, save the user to the database
         }
            
         ?>
