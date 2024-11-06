@@ -9,6 +9,30 @@
 </head>
 <body>
     <div class="container">
+        <?php 
+          if (isset($_POST["submit"])) {
+            $fullname = $_POST["Fullname"];
+            $email = $_POST['email'];
+            $password = $_POST['Password'];
+            $repeat_password = $_POST['repeat_password'];
+            $errors = array();
+            if (empty($fullname) OR empty($email) OR empty($password) OR empty($repeat_password)) {
+                array_push($errors, "All fields are required");
+            }  
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                array_push($errors, "Invalid Email");
+            }
+            if ($password != $repeat_password) {
+                array_push($errors, "Passwords do not match");
+            }
+            if (strlen($password) < 8 ) {
+                array_push($errors, "Password must be at least 8 characters");
+            }
+        }
+            //if any errors display them
+            // if no errors, save the user to the database
+           
+        ?>
         <form action="registration.php" method="post">
         <div class="form-group">
             <input  class="form-control" type="text" name="Fullname" placeholder="Full Name:">
@@ -22,8 +46,8 @@
         <div class="form-group">
             <input class="form-control" type="text" name="repeat_password" placeholder="Repeat Password">
         </div>
-        <div class="form-group">
-            <input class="btn btn-primary" type="submit" name="Register" placeholder="submit">
+        <div class="form-btn">
+            <input class="btn btn-primary" type="submit" value="Register" name="submit" placeholder="Register">
         </div>
         </form>
     </div>
