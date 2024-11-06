@@ -28,9 +28,15 @@
             if (strlen($password) < 8 ) {
                 array_push($errors, "Password must be at least 8 characters");
             }
-        }
+
             //if any errors display them
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    echo "<p class='text-danger'>$error</p>";
+                }
+            }
             // if no errors, save the user to the database
+        }
            
         ?>
         <form action="registration.php" method="post">
