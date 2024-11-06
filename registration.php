@@ -37,6 +37,14 @@
             if (strlen($password) < 8 ) {
                 array_push($errors, "Password must be at least 8 characters");
             }
+            
+            require_once "database.php";
+            $sql = "SELECT * FROM users WHERE email = '$email'";
+            $result = mysqli_query($conn, $sql);
+            $rowCount = mysqli_num_rows($result);
+            if ($rowCount > 0) {
+                array_push($errors, "Email already exists");
+            }
 
             //if any errors display them
             // if no errors, save the user to the database
@@ -45,14 +53,15 @@
                     echo "<p class='text-danger'>$error</p>";
                 }
             }else{
-                require_once "database.php";
                 $sql = "INSERT INTO users (full_name, email, Password) VALUES (?, ?, ?)";
                 $stmt = mysqli_stmt_init($conn);
                 $prepareStmt = mysqli_stmt_prepare($stmt, $sql);
                 if($prepareStmt){
                     mysqli_stmt_bind_param($stmt, "sss", $fullname, $email, $passwordHash);
                     mysqli_stmt_execute($stmt);
-                    echo "<p class='text-success'>Registration Successful</p>";
+                    echo "<p class='alert alert-success'>Registration Successful<p>";
+                }else {
+                    die("something went wrong");
                 }
             }
         }
