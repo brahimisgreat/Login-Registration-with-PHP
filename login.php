@@ -1,3 +1,11 @@
+<?php 
+session_start();
+if(isset($_SESSION["user"])) {
+    header("Location: index.php");
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +29,8 @@
                    $user = mysqli_fetch_assoc($result);
                    $passwordHash = $user["password"];
                    if (password_verify($password, $passwordHash)) {
+                        session_start();
+                        $_SESSION["user"] = "yes  ";
                         header("Location: index.php");
                        echo "<p class='text-success'>Login successful</p>";
                    }else{
